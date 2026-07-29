@@ -23,6 +23,7 @@ from versioning import build_artifact_version
 # Initialize environment
 ROOT = Path(__file__).parent
 ARTIFACTS_DIR = ROOT / "artifacts"
+DATA_DIR = ROOT / "data"
 load_lab_env(ROOT)
 
 # Page configuration
@@ -34,6 +35,24 @@ st.set_page_config(
 )
 
 
+def load_all_eval_cases() -> list[dict[str, Any]]:
+    cases = []
+    for file_name in ["eval_group.json", "eval_base.json"]:
+        file_path = DATA_DIR / file_name
+        if file_path.exists():
+            try:
+                data = json.loads(file_path.read_text(encoding="utf-8"))
+                for c in data.get("cases", []):
+                    c["source_suite"] = data.get("dataset_role", file_name)
+                    cases.append(c)
+            except Exception:
+                pass
+    return cases
+
+
+all_eval_cases = load_all_eval_cases()
+
+
 def init_session_state() -> None:
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -41,6 +60,8 @@ def init_session_state() -> None:
         st.session_state.history = []
     if "turn_records" not in st.session_state:
         st.session_state.turn_records = []
+    if "preset_prompt" not in st.session_state:
+        st.session_state.preset_prompt = ""
 
 
 init_session_state()
@@ -102,6 +123,14 @@ st.markdown(
         border-radius: 4px;
         font-weight: bold;
         font-size: 0.85rem;
+    }}
+    .case-card {{
+        background-color: #1e293b;
+        border: 1px solid #475569;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 8px;
+        margin-bottom: 12px;
     }}
     .hash-text {{
         font-family: monospace;
@@ -181,6 +210,46 @@ st.sidebar.markdown(
     unsafe_allow_html=True,
 )
 
+# 🧪 Test Case Selector & Inspector
+st.sidebar.subheader("🧪 Test Case Inspector")
+case_options = ["-- Chọn Test Case ID --"] + [f"{c['id']} [{c['source_suite'].upper()}]" for c in all_eval_cases]
+selected_case_option = st.sidebar.selectbox("Test Case ID", options=case_options, index=0)
+
+if selected_case_option != "-- Chọn Test Case ID --":
+    selected_id = selected_case_option.split(" [")[0]
+    matched_case = next((c for c in all_eval_cases if c["id"] == selected_id), None)
+
+    if matched_case:
+        prompt_text = matched_case.get("query")
+        if not prompt_text and matched_case.get("turns"):
+            prompt_text = matched_case["turns"][0].get("user", "")
+
+        expect_calls = matched_case.get("expect", {}).get("tool_calls", [])
+        no_tool = matched_case.get("expect", {}).get("no_tool", False)
+        failure_type = matched_case.get("failure_type", "N/A")
+        what_it_tests = matched_case.get("metadata", {}).get("what_it_tests", "")
+
+        expected_summary = "no_tool (Không gọi tool)" if no_tool else json.dumps(expect_calls, ensure_ascii=False)
+
+        st.sidebar.markdown(
+            f"""
+            <div class="case-card">
+                <div style="font-size:0.85rem; color:#60a5fa; font-weight:bold;">📋 Case ID: {matched_case['id']}</div>
+                <div style="font-size:0.8rem; margin-top:4px;"><b>Failure Type:</b> <code style="color:#f87171;">{failure_type}</code></div>
+                <div style="font-size:0.8rem; margin-top:4px;"><b>Prompt:</b> <br><i>"{prompt_text}"</i></div>
+                <div style="font-size:0.8rem; margin-top:4px;"><b>Expected Tool:</b> <br><code style="color:#34d399;">{expected_summary}</code></div>
+                {f'<div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;"><b>Mô tả:</b> {what_it_tests}</div>' if what_it_tests else ''}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        if st.sidebar.button("🚀 Nạp Prompt vào Chat Input", use_container_width=True):
+            st.session_state.preset_prompt = prompt_text
+            st.rerun()
+
+st.sidebar.markdown("---")
+
 # Provider & Model Settings
 st.sidebar.subheader("⚙️ Model Settings")
 provider_name = st.sidebar.selectbox(
@@ -202,6 +271,7 @@ if st.sidebar.button("🧹 Clear Chat History", use_container_width=True):
     st.session_state.messages = []
     st.session_state.history = []
     st.session_state.turn_records = []
+    st.session_state.preset_prompt = ""
     st.rerun()
 
 # Main Title Header
@@ -256,8 +326,11 @@ for idx, message in enumerate(st.session_state.messages):
                             )
                             st.json({"arguments": tool_args, "result": res_payload})
 
-# Chat Input
-if prompt := st.chat_input("Enter your request or question here..."):
+# Chat Input with Preset Prompt Support
+default_input = st.session_state.preset_prompt
+st.session_state.preset_prompt = ""  # Consume preset
+
+if prompt := st.chat_input("Enter your request or question here...", key="chat_input"):
     # Display user message
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
