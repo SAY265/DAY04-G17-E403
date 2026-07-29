@@ -1,9 +1,17 @@
 # Day 04 Lab v2 Report — Research Agent
 
 ## Team
-- Team: Research Agent Team G17
-- Members: Giap Quoc Anh, Chu Tuấn Việt, Hà Xuân Sơn, Vũ Quốc Anh.
-- Provider/model: OpenRouter (`openai/gpt-4o-mini`)
+- **Team**: Research Agent Team G17
+- **Provider/model**: OpenRouter (`openai/gpt-4o-mini`)
+
+### 👥 Phân công Vai trò & Nhiệm vụ Thành viên (Role Division):
+
+| Thành viên | Vai trò | Nhiệm vụ chính |
+|---|---|---|
+| **Giáp Quốc Anh** | **Lead & Agent System Architecture** | Tối ưu hóa `system_prompt.md`, quản lý vòng lặp phiên bản `v0-v3`, phát triển ứng dụng Web Streamlit UI (`app.py`), cấu hình `tools.yaml`. |
+| **Chu Tuấn Việt** | **Custom Tool Developer** | Thiết kế và phát triển Custom Tool `calculator` (`TOOL.md`, `calculator.py`, `tool.py`), đăng ký tool vào hệ thống và viết test script độc lập. |
+| **Hà Xuân Sơn** | **Eval & Benchmark Specialist** | Thiết kế bộ đề kiểm thử nhóm 10 cases (`data/eval_group.json`), thực thi `run_eval.py`, thu thập metrics và phân tích lỗi (Failure Analysis). |
+| **Vũ Quốc Anh** | **Safety & Guardrail Specialist** | Thiết lập ranh giới xác nhận an toàn (Confirmation Boundary cho `send`), kiểm thử ranh giới `clarify` và soạn thảo tài liệu báo cáo `REPORT.md`. |
 
 ---
 
