@@ -1,8 +1,8 @@
 # Day 04 Lab v2 Report — Research Agent
 
 ## Team
-- Team: Research Agent Team 04
-- Members: Giap Quoc Anh
+- Team: Research Agent Team G17
+- Members: Giap Quoc Anh, Chu Tuấn Việt, Hà Xuân Sơn, Vũ Quốc Anh.
 - Provider/model: OpenRouter (`openai/gpt-4o-mini`)
 
 ---
