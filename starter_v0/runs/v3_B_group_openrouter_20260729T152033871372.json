@@ -1,0 +1,718 @@
+{
+  "run_id": "v3_B_group_openrouter_20260729T152033871372",
+  "version": "v3",
+  "artifact_version": "v3+p36d5d449a25a+t9e1005cb9dfe",
+  "prompt_hash": "36d5d449a25a9f455c085a01cb56be8874bce748842a9fea9352a3d7f91bd511",
+  "tools_hash": "9e1005cb9dfe235f69df616a6a32b3ea13e516dba56f7f5eb649d4f45577dc60",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openrouter",
+  "model": "openai/gpt-4o-mini",
+  "system_prompt": "C:\\Lab\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Lab\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Suite đánh giá riêng của nhóm gồm đúng 10 case (5 single-turn, 5 multi-turn) bao phủ đủ 6 failure mode.",
+  "generated_at": "2026-07-29T15:20:33",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 10,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_single_calculator_routing",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Đảm bảo agent route đúng sang custom tool calculator cho biểu thức tính toán."
+      },
+      "input": "Tính giúp mình 25 * 4 + sqrt(144)",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "calculator",
+            "args": {
+              "expression": "25 * 4 + sqrt(144)"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "calculator",
+            "args": {
+              "expression": "25 * 4 + sqrt(144)"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "calculator",
+          "args": {
+            "expression": "25 * 4 + sqrt(144)"
+          },
+          "result": {
+            "tool": "calculator",
+            "expression": "25 * 4 + sqrt(144)",
+            "result": 112.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_single_missing_url",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Hỏi người dùng bổ sung URL khi thiếu trong câu lệnh đọc bài."
+      },
+      "input": "Đọc bài viết này giúp mình với",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn vui lòng cung cấp địa chỉ URL của bài viết mà bạn muốn đọc không?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn vui lòng cung cấp địa chỉ URL của bài viết mà bạn muốn đọc không?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn vui lòng cung cấp địa chỉ URL của bài viết mà bạn muốn đọc không?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_single_telegram_boundary",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Yêu cầu hỏi xác nhận yes_no trước khi gửi tin lên Telegram."
+      },
+      "input": "Gửi thông báo 'Đã xong báo cáo' qua Telegram giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn có chắc chắn muốn gửi thông báo 'Đã xong báo cáo' qua Telegram không?",
+              "response_type": "yes_no"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có chắc chắn muốn gửi thông báo 'Đã xong báo cáo' qua Telegram không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có chắc chắn muốn gửi thông báo 'Đã xong báo cáo' qua Telegram không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_single_out_of_scope",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Câu hỏi lập trình thuần túy không cần gọi bất kỳ tool tra cứu nào."
+      },
+      "input": "Viết giúp mình một đoạn mã Python tính dãy Fibonacci",
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Dưới đây là một đoạn mã Python để tính dãy Fibonacci:\n\n```python\ndef fibonacci(n):\n    fib_sequence = []\n    a, b = 0, 1\n    for _ in range(n):\n        fib_sequence.append(a)\n        a, b = b, a + b\n    return fib_sequence\n\n# Số lượng số trong dãy Fibonacci cần tính\nn = 10\nprint(fibonacci(n))\n```\n\nĐoạn mã này định nghĩa một hàm `fibonacci` nhận vào một số nguyên `n` và trả về dãy Fibonacci với `n` số đầu tiên. Bạn có thể thay đổi giá trị của `n` để tính số lượng số trong dãy mà bạn muốn.",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G05_single_lookup_news_args",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Đảm bảo bóc tách đúng query, topic='news' và timeframe='day' khi tìm tin tức hôm nay."
+      },
+      "input": "Tìm tin tức công nghệ mới nhất hôm nay",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "công nghệ",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "công nghệ",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "công nghệ",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "công nghệ",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "TP. Hồ Chí Minh hút nguồn lực công nghệ toàn cầu, tạo động lực tăng trưởng mới | Thời báo Tài chính Việt Nam",
+                "url": "https://thoibaotaichinhvietnam.vn/tp-ho-chi-minh-hut-nguon-luc-cong-nghe-toan-cau-tao-dong-luc-tang-truong-moi-201399.html",
+                "source": "thoibaotaichinhvietnam.vn",
+                "summary": "Để hiện thực hóa mục tiêu này, TP. Hồ Chí Minh xác định khoa học công nghệ, đổi mới sáng tạo và chuyển đổi số là động lực tăng trưởng chủ yếu trong giai đoạn phát triển mới. Theo ông Nguyễn Mạnh Cường, các công nghệ nền tảng như trí tuệ nhn tạo (AI), công nghệ bán dẫn và công nghệ số sẽ tạo ra mô hình tăng trưởng mới, góp phần nng cao năng suất lao động, năng lực cạnh tranh của doanh nghiệp và hiệu quả quản trị đô thị. [...] GS. Nguyễn Đức Khương cho biết, Việt Nam đang đứng trước thời điểm thuận lợi để bứt phá bằng khoa học công nghệ, song yếu tố quyết định vẫn là con người. “Công nghệ không thay đổi quốc gia, mà con người mới là người thay đổi quốc gia thông qua công nghệ” - GS. Nguyễn Đức Khương nhấn mạnh. [...] GS. Nguyễn Đức Khương - Chủ tịch AVSE Global, thành viên Hội đồng Tư vấn quốc gia về khoa học, công nghệ và đổi mới sáng tạo cho rằng, điều kết nối những người tham dự diễn đàn không chỉ là chuyên môn, mà còn là khát vọng đóng góp cho sự phát triển của đất nước.",
+                "score": 0.27626613
+              },
+              {
+                "title": "Trung Chính đưa công nghệ đến gần người dân",
+                "url": "https://baothanhhoa.vn/trung-chinh-dua-cong-nghe-nbsp-den-gan-nguoi-dan-296222.htm",
+                "source": "baothanhhoa.vn",
+                "summary": "phát triển kinh tế, giáo dục con cái. [...] Ông Lương Khắc Bình, Phó Chủ tịch UBND xã Trung Chính, cho biết: “Công tác phát triển khoa học, công nghệ, đổi mới sáng tạo và CĐS trên địa bàn xã Trung Chính được triển khai đồng bộ, đạt nhiều kết quả tích cực. Hoạt động của các tổ công nghệ số cộng đồng và phong trào “Bình dn học vụ số” tiếp tục được duy trì, góp phần nng cao nhận thức, kỹ năng số cho người dn, từng bước hình thành công dn số và xã hội số tại địa phương, hướng tới mỗi khu dn cư có ít nhất một người sử dụng thành thạo công [...] Từ những lớp tập huấn kỹ năng số, mô hình “Cu lạc bộ chi hội số” đến hoạt động của các tổ công nghệ số cộng đồng, xã Trung Chính đang từng bước đưa công nghệ đến gần người dn. Chuyển đổi số không còn là khái niệm xa vời mà đã trở thành những việc làm cụ thể, giúp người dn thuận tiện hơn trong giải quyết thủ tục hành chính và tiếp cận các dịch vụ số.\n\nBà Nguyễn Thị Tăng ở thôn Mỹ Thanh, xã Trung Chính thực hiện việc nộp các thủ tục hành chính ngay tại nhà.",
+                "score": 0.24295065
+              },
+              {
+                "title": "TP.HCM không chỉ ứng dụng công nghệ mà muốn tạo ra công nghệ mới",
+                "url": "https://ttbc-hcm.gov.vn/tp-hcm-khong-chi-ung-dung-cong-nghe-ma-muon-tao-ra-cong-nghe-moi-1021867.html",
+                "source": "ttbc-hcm.gov.vn",
+                "summary": "TP.HCM không chỉ ứng dụng công nghệ mà còn phấn đấu trở thành nơi kiến tạo các công nghệ mới, nuôi dưỡng doanh nghiệp công nghệ có năng lực cạnh tranh quốc",
+                "score": 0.21832791
+              },
+              {
+                "title": "Ủy ban Khoa học, Công nghệ và Môi trường khảo sát an toàn thực phẩm và hạ tầng phục vụ APEC 2027 tại Phú Quốc",
+                "url": "https://angiang.gov.vn/vi/uy-ban-khoa-hoc-cong-nghe-va-moi-truong-khao-sat-an-toan-thuc-pham-va-ha-tang-phuc-vu-apec-2027-tai-phu-quoc",
+                "source": "angiang.gov.vn",
+                "summary": "(Cổng TTĐT tỉnh AG) – Ngày 28/7, Đoàn công tác của Ủy ban Khoa học, Công nghệ và Môi trường của Quốc hội khóa XVI khảo sát việc thực hiện chính sách,",
+                "score": 0.15059036
+              },
+              {
+                "title": "Liên tiếp khởi tố các vụ xâm phạm quyền sở hữu công nghiệp, thu giữ hàng hoá trị giá hàng tỷ đồng",
+                "url": "https://mst.gov.vn/lien-tiep-khoi-to-cac-vu-xam-pham-quyen-so-huu-cong-nghiep-thu-giu-hang-hoa-tri-gia-hang-ty-dong-197260726002358159.htm",
+                "source": "mst.gov.vn",
+                "summary": "Cơ quan Cảnh sát điều tra tại nhiều địa phương liên tiếp khởi tố các vụ xâm phạm quyền sở hữu công nghiệp liên quan đến trang sức, đồng hồ và thiết bị ô tô",
+                "score": 0.085962325
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G06_multi_clarify_then_tweets",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Hỏi tên tài khoản ở lượt 1, sau khi người dùng cung cấp thì gọi timeline ở lượt 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Xem bài đăng mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Tài khoản Elon Musk ấy"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "elonmusk"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "elonmusk",
+            "items": [
+              {
+                "title": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.",
+                "summary": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.\n\nThe independent test measures how well AI m…",
+                "url": "https://x.com/elonmusk/status/2082369174828118361",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:34:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 110,
+                  "views": "399512"
+                }
+              },
+              {
+                "title": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:",
+                "summary": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:\n\n\"Determined to maintain their individual transporta…",
+                "url": "https://x.com/elonmusk/status/2082368994552782986",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:51 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 899,
+                  "views": "309105"
+                }
+              },
+              {
+                "title": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it ",
+                "summary": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it feels remarkable. I…",
+                "url": "https://x.com/elonmusk/status/2082368965498773975",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:44 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 143,
+                  "views": "302127"
+                }
+              },
+              {
+                "title": "RT @cb_doge: Help build the AI that advances humanity.",
+                "summary": "RT @cb_doge: Help build the AI that advances humanity.\n\nSpaceXAI is hiring exceptional engineers to work on @Grok. Explore all open roles t…",
+                "url": "https://x.com/elonmusk/status/2082368915129401688",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:32 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 151,
+                  "views": "309792"
+                }
+              },
+              {
+                "title": "Cool",
+                "summary": "Cool",
+                "url": "https://x.com/elonmusk/status/2082368400702226588",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:31:29 +0000 2026",
+                "metrics": {
+                  "favorites": 3726,
+                  "retweets": 352,
+                  "views": "561733"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_multi_switch_to_fetch",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Đổi ý từ tìm kiếm web sang đọc URL cụ thể ở lượt sau."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm bài viết về GPT-5 trên web"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không cần tìm nữa, đọc thẳng bài này: https://openai.com/index/gpt-5"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/index/gpt-5"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/index/gpt-5"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://openai.com/index/gpt-5"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://openai.com/index/gpt-5",
+            "items": [
+              {
+                "title": "OpenAI",
+                "url": "https://openai.com/index/gpt-5",
+                "source": "openai.com",
+                "summary": "OpenAI\n\n# 404\n\nBookmark lost its page\n\nThe story hides a spare door\n\nEnter through a line\n\nby [gpt-5.6-sol(opens in a new window)](https://chatgpt.com/?model=gpt-5.6-sol&openaicom-did=30be3c9e-b617-4e74-9c00-d9569de696e4&openaicom_referred=true)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_multi_cancel_request",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Người dùng hủy yêu cầu ở lượt 2, không được gọi bất kỳ tool nào."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin tức AI hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "À thôi hủy đi, mình tự tìm được rồi"
+        }
+      ],
+      "expect": {
+        "no_tool": true
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Không vấn đề gì! Nếu bạn cần giúp đỡ gì khác, hãy cho tôi biết nhé!",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G09_multi_carryover_and_timeframe",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Giữ nguyên chủ đề NVIDIA và cập nhật timeframe từ month sang day."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin về NVIDIA trong tháng này"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy tin hôm nay thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "NVIDIA",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "NVIDIA",
+              "topic": "news",
+              "timeframe": "day",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "NVIDIA",
+            "topic": "news",
+            "timeframe": "day",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "NVIDIA",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "Nvidia (NVDA) Pours $5 Billion Into Safe AI And Expands Data Center Reach",
+                "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-pours-5-billion-031308100.html",
+                "source": "finance.yahoo.com",
+                "summary": "Nvidia (NasdaqGS:NVDA) is committing US$5b to Safe Superintelligence, a new AI safety startup led by former OpenAI chief scientist Ilya Sutskever.\n The company is entering multibillion dollar AI data center lease deals, including a large buildout with Hut 8 in Texas.\n Nvidia is expanding its Agent Toolkit platform through new partnerships with Synopsys, Siemens, and Cadence to support chip and system design automation. [...] Nvidia sits at the center of AI computing, with its GPUs and software stack widely used across data centers, research labs, and enterprise workloads. These moves extend that reach into AI safety research through Safe Superintelligence and into large scale infrastructure through long term data center agreements in the United States. [...] 📊 The Safe Superintelligence stake, large AI data center leases, and Agent Toolkit partnerships extend Nvidia's reach across AI hardware, software, and safety research. These factors may influence how investors frame its long term role in the AI stack.\n 📊 Watch how these commitments flow into data center revenue, R&D spend, and any commentary on AI agent adoption from partners such as Synopsys, Siemens, and Cadence.",
+                "score": 0.91102153
+              },
+              {
+                "title": "Build AI Anywhere With NVIDIA Jetson",
+                "url": "https://blogs.nvidia.com/blog/build-ai-with-nvidia-jetson",
+                "source": "blogs.nvidia.com",
+                "summary": "Compact enough to carry in a bag, yet powerful enough to take on the toughest problems, NVIDIA Jetson modules and developer kits power robots, autonomous machines and real-world AI projects in classrooms, labs and makerspaces — wherever inspiration strikes — enabling developers to build using industry-transforming frontier open models at the highest standard of safety and security. [...] ## Self Driving My EV Car  | Model SidewalkPilot\n\nA custom SidewalkPilot AI model autonomously executes maneuvers in a toy electric vehicle using Jetson Orin Nano Super.\n\n## Reachy Mini Jetson Assistant\n\nReachy Mini Jetson Assistant is a low-latency, fully on-device voice and vision assistant for Reachy Mini Lite powered by NVIDIA Jetson Orin Nano Super. Everything runs locally with GPU acceleration — no cloud, no API keys, no internet required at runtime. Get started here. [...] country_code\n\nSkip to content\n\n# Powerful Compute So Compact, It’s Clutch — Build AI in Your Hand With NVIDIA Jetson\n\nJuly 28, 2026 by Matthew Leib\n\n0 Comments\n\nShare This Article\n\n X\n Facebook\n LinkedIn\n Copy link\n\n  Link copied!\n\n## Anyone can make a robot move; NVIDIA Jetson makes it think.\n\nAs a discerning AI investor who values style and substance, Sarah Guo knows this season’s standout accessory isn’t the latest designer purse — but what’s inside it.",
+                "score": 0.84286314
+              },
+              {
+                "title": "NVIDIA CEO to meet with Sen. Cruz on AI - Nextgov/FCW",
+                "url": "https://www.nextgov.com/artificial-intelligence/2026/07/nvidia-ceo-meet-sen-cruz-ai/415074",
+                "source": "nextgov.com",
+                "summary": "An NVIDIA spokesperson told Nextgov/FCW in a statement on Tuesday that Huang will be discussing NVIDIA’s work “to strengthen the country’s chip supply chain by producing $500B in American technology over four years and American leadership in AI, including leading in open source.”\n\nNVIDIA declined to comment on the length of Huang's time in D.C. and other meeting details.\n\nPolitico first reported Huang’s presence in D.C. this week. [...] The chipmaker has been leading calls to continue supporting access to open-source AI models, launching a new security alliance on Monday with over 30 other companies dedicated to advancing open-source technologies for cybersecurity.\n\n“Open models strengthen safety and cybersecurity, accelerate innovation and diffusion, and enable sovereignty,” Huang said in a post on X last Friday. “The world needs both frontier closed models and frontier open models.”",
+                "score": 0.8301815
+              },
+              {
+                "title": "Bristol Myers Squibb Hopes to Boost Drug Trials with NVIDIA Supercomputer - NAM",
+                "url": "https://nam.org/bristol-myers-squibb-hopes-to-boost-drug-trials-with-nvidia-supercomputer",
+                "source": "nam.org",
+                "summary": "The move builds on a three-year partnership between the companies, which started when BMS first began using NVIDIA DGX SuperPOD infrastructure for its research and development.\n NVIDIA unveiled the Vera Rubin architecture, the successor to its current AI systems, earlier this year (Reuters, subscription).\n\nWhy it’s important:BMS is using the NVIDIA tech “to help discover and develop medicines across multiple disease areas,” according to Fierce Biotech. [...] What’s going on:BMS will “expand its infrastructure to deploy … the NVIDIA DGX SuperPOD that is enabled with AIDGX Vera Rubin NVL72 systems. The result will be the ‘most powerful and energy-efficient single-owned NVIDIA infrastructure in life sciences,’ BMS claimed in a July 20 release.” [...] This most recent agreement between BMS and NVIDIA furthers BMS’ vision for hybrid intelligence, in which artificial intelligence and human researchers work together, BMS said.\n This means that researchers will spend fewer hours on manual tasks and more on “questions that require human judgment.”",
+                "score": 0.83004373
+              },
+              {
+                "title": "NVIDIA stock upgraded to Hold/Accumulate",
+                "url": "https://stockinvest.us/stock-news/nvidia-stock-upgraded-to-holdaccumulate-2026-07-28",
+                "source": "stockinvest.us",
+                "summary": "The NVIDIA stock price gained 0.254% on the last trading day (Tuesday, 28th Jul 2026), rising from $196.51 to $197.01. During the last trading day the stock fluctuated 3.09% from a day low at $192.74 to a day high of $198.70. The price has been going up and down for this period, and there has been a -6.98% loss for the last 2 weeks. Volume fell on the last day by -28 million shares and in total, 125 million shares were bought and sold for approximately $24.65 billion. You should take into [...] On Jul 27, 2026, it was reported that Bank of America Securities gave NVDA a \"Buy\" grade with a \"hold\" action.\n\nThe stock lies in the middle of a wide and falling trend in the short term and further fall within the trend is signaled.Given the current short-term trend, the stock is expected to fall -5.93% during the next 3 months and, with a 90% probability hold a price between $176.54 and $210.86 at the end of this 3-month period.\n\nNVIDIA [...] NVIDIA holds several negative signals and this should be a sell candidate, but due to the general chance for a turnaround situation it should be considered as a hold candidate (hold or accumulate) in this position whilst awaiting further development.We have upgraded our analysis conclusion for this stock since the last evaluation from a Sell to a Hold candidate.\n\nCheck full NVIDIA forecast and analysis here.\n\nTrusted Broker\n\nStart Your Journey With:\n\neToro\n\n0% Commission Stock Trading",
+                "score": 0.80332816
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_multi_clarify_then_fetch",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Hỏi URL ở lượt 1, sau khi nhận URL ở lượt 2 thì gọi fetch."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt giúp mình nội dung trang web"
+        },
+        {
+          "role": "user",
+          "content": "Địa chỉ là https://deepmind.google"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://deepmind.google"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://deepmind.google"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://deepmind.google"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://deepmind.google",
+            "items": [
+              {
+                "title": "Google DeepMind",
+                "url": "https://deepmind.google",
+                "source": "deepmind.google",
+                "summary": "[Skip to main content](https://deepmind.google/#page-content)\n\nSlide 1 of 1\n\n![](https://lh3.googleusercontent.com/ou-2xO3BzwubFvFfPRayNTEpLj49EpiAS8OcxbfismRoa7Pyx8jnmF0A6OksobU6GxDLAWVYDC8lxURGIsjmLHAV-TSkwiwhl9pvSZxFmeOn7JBF=w1440)![](https://lh3.googleusercontent.com/NKevIbG_l54xMZPJ8SWx7YE1M21XWIlOxlEh00Ed9qXRSMGkyltGHy0YSgC5w6qnRceVs-MQLY_0fIFFTDDJctk9Ydyg4-DK2f56WC2RHFRlfvmpFw=w1440)\n\nYour browser does not support the video tag.\n\n### Gemini 3.5\n\nOur latest series of models combine frontier intelligence with action\n\n[Learn more](https://deepmind.google/models/gemini/) [Try](https://gemini.google.com/?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)\n\n![A close-up of a colorful, spiny orb-weaver spider covered in dew droplets on its web.](https://lh3.googleusercontent.com/CwP2k1lo2jxp6oekHxkRQJ3jPJtAb0aib9IYmBAldhviRN8fnug9EmtCk9fnhpVz7KJKuYNprb8utbXxl0J8IBpNkqIyXIX61cmBYVipyLa-jaYo=w1440)\n\n### Nano Banana 2 Lite 🍌\n\nOur fastest, most efficient Gemini Image model\n\n[Learn more](https://deepmind.google/models/gemini-image/flash-lite/) [Try](https://aistudio.google.com/prompts/new_chat?model=gemini-3.1-flash-lite-image&utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)\n\n![](https://lh3.googleusercontent.com/ggTBCe5uQmOhiCXtVnODnHTtu-vpX1kNuPxYpbvKMwIgh6YHpf0J4znRfsvS_6f0nOtUbZrDy3PwwXyIZhepDYlF9qxB7XRDTNoCs0i66clbB3WOcw=w1440)\n\nYour browser does not support the video tag.\n\n### Gemini Omni\n\nCreate anything from anything, starting with video\n\n[Learn more](https://deepmind.google/models/gemini-omni/) [Try](https://gemini.google.com/?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)\n\n![A stylized 3D digital illustration of microscopic, vibrant protein or cellular structures with radiating purple stems and multi-colored nodes against a soft, bokeh-effect background.](https://lh3.googleusercontent.com/4gIMnMwwssEllhMqvgZ0PJpRVERPthPD7i5ru2IbY_Dk5UPASPX0T9lNIwSXf00dp38DB7FvMzpHulcb35X8eRYzfS5KXHbprO4pFBr_L9bCzn8jrnk=w1440)\n\n### Co-Scientist\n\nA collaborative AI research partner\n\n[Learn more](https://deepmind.google/blog/co-scientist-a-multi-agent-ai-partner-to-accelerate-research/)\n\n![](https://lh3.googleusercontent.com/zIshxXkrrhtXEq8febjj7-BmcF0rJQjsoagE7MN4qwETXkj5-T93-1auTkTdbHnv-5urMLBllKkff_jO2mRf4_JlafCWGMdZJmgLa64lYn7VoXd5=w1440)![](https://lh3.googleusercontent.com/yX1CuTq4Qf6r1F0MZnOxVV1FaWXEZnWnDvvU4N5leAADY0xUFSGFFWUxqF5xAJoNMuy4IUcC-IbYOfeSvCta2kIhdWYhfczdqPV1qa8v-KB6Nd35=w1440)\n\nYour browser does not support the video tag.\n\n### Gemini for Science\n\nPowering scientific discovery with AI\n\n[Learn more](https://ai.google/gemini-for-science/?utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)\n\n![](https://lh3.googleusercontent.com/sILaSdIzu5XraA6U7t26JH98KgsZNCG3T0nIjJ0wmrZu5VBv5fh6ruPmyhRLt_TXzw2clBDyzHskiws_ocNEIYvJcAmB2LcInywK6tlT2Ha8MNzyiA=w1440)![](https://lh3.googleusercontent.com/TA6G2uPlHmdizvOiRbsA_rFtaP03Sh2h3_lOVyL07fZkwrCuijoLWRECyOgjvFpA3OyNBkh5iKZZam0vU-0iOmFfzsqHcaxobrJzQNGvSNDyEUnI-XQ=w1440)\n\nYour browser does not support the video tag.\n\n### Gemma 4\n\nOur most intelligent open models, built to maximize intelligence-per-parameter\n\n[Learn more](https://deepmind.google/models/gemma/gemma-4/) [Try](https://aistudio.google.com/prompts/new_chat?model=gemma-4-31b-it&utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)\n\n![](https://lh3.googleusercontent.com/ynuk8_WhOymp6Yk9fKHtJz1jMj-Dtgzw_OZ_moKhp5vUskxdFCKiPw2WmDVeuJekjoVdgtQ3vLTYyYEVUUIO2nkr7ciPIeC8v-g6X0TYmtobW-Vb=w1440)![](https://lh3.googleusercontent.com/bB1pBZRMTHc9_k4_yuoMkFm0WfLYPbUN_epMZPeU1Ry3JNa6LI8lbMLRY-eXmNOD_Qn14u5pOT_OXBkh1MlaMh-DFfAZz9vlbDxC_JWPhDhlP8onewc=w1440)\n\nYour browser does not support the video tag.\n\n### Lyria 3\n\nCompose music with vocals, and experiment with acoustic details\n\n[Learn more](https://deepmind.google/models/lyria/) [Try](https://gemini.google.com/music?utm_source=deepmind.google&utm_medium=referra"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

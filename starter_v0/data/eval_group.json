@@ -1,7 +1,240 @@
 {
   "dataset_id": "day04_v2_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Suite đánh giá riêng của nhóm gồm đúng 10 case (5 single-turn, 5 multi-turn) bao phủ đủ 6 failure mode.",
+  "allowed_failure_types": [
+    "wrong_tool",
+    "wrong_arg_value",
+    "wrong_boundary",
+    "unnecessary_tool",
+    "out_of_scope",
+    "missing_info"
+  ],
+  "cases": [
+    {
+      "id": "G01_single_calculator_routing",
+      "phase": "B",
+      "query": "Tính giúp mình 25 * 4 + sqrt(144)",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "calculator",
+            "args": {
+              "expression": "25 * 4 + sqrt(144)"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Đảm bảo agent route đúng sang custom tool calculator cho biểu thức tính toán."
+      }
+    },
+    {
+      "id": "G02_single_missing_url",
+      "phase": "B",
+      "query": "Đọc bài viết này giúp mình với",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Hỏi người dùng bổ sung URL khi thiếu trong câu lệnh đọc bài."
+      }
+    },
+    {
+      "id": "G03_single_telegram_boundary",
+      "phase": "B",
+      "query": "Gửi thông báo 'Đã xong báo cáo' qua Telegram giúp mình",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Yêu cầu hỏi xác nhận yes_no trước khi gửi tin lên Telegram."
+      }
+    },
+    {
+      "id": "G04_single_out_of_scope",
+      "phase": "B",
+      "query": "Viết giúp mình một đoạn mã Python tính dãy Fibonacci",
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Câu hỏi lập trình thuần túy không cần gọi bất kỳ tool tra cứu nào."
+      }
+    },
+    {
+      "id": "G05_single_lookup_news_args",
+      "phase": "B",
+      "query": "Tìm tin tức công nghệ mới nhất hôm nay",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "công nghệ",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Đảm bảo bóc tách đúng query, topic='news' và timeframe='day' khi tìm tin tức hôm nay."
+      }
+    },
+    {
+      "id": "G06_multi_clarify_then_tweets",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Xem bài đăng mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Tài khoản Elon Musk ấy"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Hỏi tên tài khoản ở lượt 1, sau khi người dùng cung cấp thì gọi timeline ở lượt 2."
+      }
+    },
+    {
+      "id": "G07_multi_switch_to_fetch",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm bài viết về GPT-5 trên web"
+        },
+        {
+          "role": "user",
+          "content": "Thôi không cần tìm nữa, đọc thẳng bài này: https://openai.com/index/gpt-5"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/index/gpt-5"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Đổi ý từ tìm kiếm web sang đọc URL cụ thể ở lượt sau."
+      }
+    },
+    {
+      "id": "G08_multi_cancel_request",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tin tức AI hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "À thôi hủy đi, mình tự tìm được rồi"
+        }
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "what_it_tests": "Người dùng hủy yêu cầu ở lượt 2, không được gọi bất kỳ tool nào."
+      }
+    },
+    {
+      "id": "G09_multi_carryover_and_timeframe",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tìm tin về NVIDIA trong tháng này"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ lấy tin hôm nay thôi"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "NVIDIA",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Giữ nguyên chủ đề NVIDIA và cập nhật timeframe từ month sang day."
+      }
+    },
+    {
+      "id": "G10_multi_clarify_then_fetch",
+      "phase": "B",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tóm tắt giúp mình nội dung trang web"
+        },
+        {
+          "role": "user",
+          "content": "Địa chỉ là https://deepmind.google"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://deepmind.google"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "what_it_tests": "Hỏi URL ở lượt 1, sau khi nhận URL ở lượt 2 thì gọi fetch."
+      }
+    }
+  ]
 }
