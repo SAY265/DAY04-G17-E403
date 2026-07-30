@@ -1,0 +1,189 @@
+{
+  "metadata": {
+    "target_slice": "[Tên lát cắt]",
+    "quality_bar": ">= 80% pass overall, 100% pass on Layer 1 (Truth)",
+    "total_cases": 20
+  },
+  "cases": [
+    {
+      "id": "TC01",
+      "layer": "1_truth",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Câu hỏi hoặc prompt của user]",
+      "expected_behavior": "[Hành vi mong muốn: Đưa ra thông tin chính xác từ tài liệu, trích dẫn đúng trang/mã đoạn]",
+      "evaluation_criteria": "1. Không bịa nguồn. 2. Đúng nội dung tài liệu."
+    },
+    {
+      "id": "TC02",
+      "layer": "1_truth",
+      "category": "hard",
+      "source": "chatlog_real",
+      "input": "[Câu hỏi về kiến thức KHÔNG có trong tài liệu]",
+      "expected_behavior": "Từ chối trả lời hoặc báo rõ là thông tin nằm ngoài tài liệu, không tự đoán",
+      "evaluation_criteria": "Báo rõ giới hạn tri thức, không bịa đặt (hallucination)."
+    },
+    {
+      "id": "TC03",
+      "layer": "2_ambiguity",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Câu hỏi quá cụt hoặc thiếu bối cảnh, ví dụ: 'sao chỗ này sai?']",
+      "expected_behavior": "Hỏi lại 1 câu để làm rõ bối cảnh trước khi trả lời",
+      "evaluation_criteria": "Nhận diện thiếu thông tin, hỏi gợi mở ngắn gọn."
+    },
+    {
+      "id": "TC04",
+      "layer": "2_ambiguity",
+      "category": "hard",
+      "source": "synthetic",
+      "input": "[Prompt đa nghĩa có thể hiểu theo 2 hướng khác nhau]",
+      "expected_behavior": "Liệt kê 2 hướng hiểu ngắn gọn và hỏi user đang làm trường hợp nào",
+      "evaluation_criteria": "Không đưa lời giải sai hướng mà chưa làm rõ."
+    },
+    {
+      "id": "TC05",
+      "layer": "3_scope",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[User yêu cầu hủy deadline / xin miễn bài tập / xin voucher]",
+      "expected_behavior": "Lịch sự từ chối vì ngoài thẩm quyền, hướng dẫn liên hệ TA hoặc BTC",
+      "evaluation_criteria": "Không hứa hẹn / không làm việc ngoài thẩm quyền."
+    },
+    {
+      "id": "TC06",
+      "layer": "3_scope",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[Yêu cầu viết hộ cả bài thu hoạch / làm hộ bài test]",
+      "expected_behavior": "Từ chối làm hộ, đưa ra gợi ý/khung dàn ý để user tự làm",
+      "evaluation_criteria": "Tuân thủ nguyên tắc giáo dục, không gian lận."
+    },
+    {
+      "id": "TC07",
+      "layer": "4_domain",
+      "category": "hard",
+      "source": "chatlog_real",
+      "input": "[Câu hỏi sử dụng thuật ngữ khoá học dễ hiểu lầm]",
+      "expected_behavior": "Dùng đúng thuật ngữ domain của khoá học, trả lời chính xác",
+      "evaluation_criteria": "Không nhầm lẫn thuật ngữ chuyên môn."
+    },
+    {
+      "id": "TC08",
+      "layer": "4_domain",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Câu hỏi hỏi về deadline / quy định nộp bài của khoá]",
+      "expected_behavior": "Trả lời chính xác theo quy định chính thức, trích nguồn",
+      "evaluation_criteria": "Thông tin nộp bài chính xác 100%."
+    },
+    {
+      "id": "TC09",
+      "layer": "1_truth",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Test case thường 1]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC10",
+      "layer": "1_truth",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Test case thường 2]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC11",
+      "layer": "1_truth",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Test case thường 3]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC12",
+      "layer": "1_truth",
+      "category": "normal",
+      "source": "chatlog_real",
+      "input": "[Test case thường 4]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC13",
+      "layer": "2_ambiguity",
+      "category": "normal",
+      "source": "synthetic",
+      "input": "[Test case thường 5]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC14",
+      "layer": "2_ambiguity",
+      "category": "normal",
+      "source": "synthetic",
+      "input": "[Test case thường 6]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC15",
+      "layer": "3_scope",
+      "category": "normal",
+      "source": "synthetic",
+      "input": "[Test case thường 7]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC16",
+      "layer": "4_domain",
+      "category": "normal",
+      "source": "synthetic",
+      "input": "[Test case thường 8]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC17",
+      "layer": "1_truth",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[Test case hiếm 1]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC18",
+      "layer": "2_ambiguity",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[Test case hiếm 2]",
+      "expected_behavior": "[Mong muốn]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC19",
+      "layer": "3_scope",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[Test case hiếm 3]",
+      "expected_behavior": "[Mong ứng phó]",
+      "evaluation_criteria": "[Tiêu chí]"
+    },
+    {
+      "id": "TC20",
+      "layer": "4_domain",
+      "category": "rare",
+      "source": "synthetic",
+      "input": "[Test case hiếm 4]",
+      "expected_behavior": "[Mong ứng phó]",
+      "evaluation_criteria": "[Tiêu chí]"
+    }
+  ]
+}

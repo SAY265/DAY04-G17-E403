@@ -226,7 +226,7 @@ Mỗi case cần:
 - `metadata.what_it_tests`
 
 File `data/eval_group.json` để trống có chủ đích vì phần team eval phải do chính nhóm tự thiết kế.
-Cả template trong `starter_v0/` và `solution/` đều trống; điều đó không thay đổi yêu cầu đúng 10 case. Xem [2 case mẫu về schema](starter_v0/samples/eval_group.schema.example.json) (không tính vào 10 case và không nộp thay case của team). Với multi-turn, phần tử cuối của `turns` phải là user turn đang được chấm.
+Cả template trong `starter_v0/` and `solution/` đều trống; điều đó không thay đổi yêu cầu đúng 10 case. Xem [2 case mẫu về schema](starter_v0/samples/eval_group.schema.example.json) (không tính vào 10 case và không nộp thay case của team). Với multi-turn, phần tử cuối của `turns` phải là user turn đang được chấm.
 
 Run:
 
@@ -314,3 +314,35 @@ Kênh nộp, quy tắc đặt tên và deadline cuối theo thông báo của gi
    - **v3 + Report B — 17:15–17:35:** áp dụng feedback, chạy v3 và hoàn thiện report bằng evidence.
    - **Final gate — 17:35–17:40:** kiểm tra và chuẩn bị nộp `starter_v0/`.
 7. **Kahoot Recap — 17:40–18:00.**
+
+---
+
+## 🏆 Cấu trúc Bài Nộp Hackathon AI (Mini Hackathon)
+
+Repo này cũng lưu trữ cấu trúc hồ sơ nộp bài Hackathon AI theo yêu cầu từ `K4-hackathon-4AM-E403/`:
+
+```
+c:\Lab\
+├── README.md          ← File này (hướng dẫn gốc + bảng phân công hackathon bên dưới)
+├── spec.md            ← AI Spec hoàn chỉnh theo template 03-template-ai-spec.md
+├── demo-slides.md     ← Slide thuyết trình 6 trang (theo guide §5.1)
+├── starter_v0/        ← Mã nguồn prototype gốc & agent framework
+├── codebase/          ← Ghi chú kiến trúc prototype (xem codebase/README.md)
+├── eval/              ← Bộ test kiểm thử & kết quả đo đạc
+│   ├── golden-set.json
+│   └── eval-results.md
+├── validation/        ← Feedback log từ vòng dùng thử với user thật
+│   └── feedback-log.md
+└── reflection/        ← Bài thu hoạch cá nhân của từng thành viên
+    └── reflection-template.md
+```
+
+### Bảng Phân Công Nhiệm Vụ Nhóm Hackathon
+
+| Mã HV | Họ và tên | Vai trò | Phân công cụ thể |
+|---|---|---|---|
+| HV001 | [Tên thành viên 1] | Product Owner / Spec | Main author `spec.md` (§1-§4), Bảng Impact, JTBD |
+| HV002 | [Tên thành viên 2] | User Researcher | Thu thập Evidence, Log khảo sát/mining, `validation/` |
+| HV003 | [Tên thành viên 3] | Prompt / Eval Engineer | Xây Golden Set `eval/`, Chạy benchmark & đo đạc (§7) |
+| HV004 | [Tên thành viên 4] | Developer / Builder | Xây dựng prototype trong `starter_v0/` / `codebase/` |
+| HV005 | [Tên thành viên 5] | Designer / Demo Lead | Thiết kế UI/UX, slide presentation `demo-slides.md` |
